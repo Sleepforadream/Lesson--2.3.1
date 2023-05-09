@@ -1,9 +1,6 @@
 package web.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 @Entity
@@ -12,18 +9,18 @@ public class User {
     public User(){};
     @Id
     @Column(name = "id")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "sur_name")
-    private String surName;
+    private String surname;
     @Column(name = "age")
     private int age;
 
-    public User(int id, String name, String sureName, int age) {
-        this.id = id;
+    public User(String name, String surname, int age) {
         this.name = name;
-        this.surName = sureName;
+        this.surname = surname;
         this.age = age;
     }
 
@@ -32,12 +29,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(name, user.name) && Objects.equals(surName, user.surName);
+        return id == user.id && age == user.age && Objects.equals(name, user.name) && Objects.equals(surname, user.surname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surName, age);
+        return Objects.hash(id, name, surname, age);
     }
 
     @Override
@@ -45,16 +42,16 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surName='" + surName + '\'' +
+                ", surname='" + surname + '\'' +
                 ", age=" + age +
                 '}';
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,12 +63,12 @@ public class User {
         this.name = name;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public int getAge() {
