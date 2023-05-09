@@ -11,13 +11,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-//    private UserDao userDao;
-//
-//    @Autowired
-//    public void setUserDao(UserDao userDao) {
-//        this.userDao = userDao;
-//    }
-
     private UserRepository userRepository;
 
     @Autowired
@@ -40,11 +33,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User getUserById(Long userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            return userRepository.findById(userId).get();
-        } else {
-            return null;
-        }
+        return userRepository.findById(userId).get();
     }
 
     @Transactional

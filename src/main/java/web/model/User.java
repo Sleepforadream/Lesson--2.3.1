@@ -6,7 +6,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "users")
 public class User {
-    public User(){};
+    public User(){}
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(name, user.name) && Objects.equals(surname, user.surname);
+        return Objects.equals(id, user.id) && age == user.age && Objects.equals(name, user.name) && Objects.equals(surname, user.surname);
     }
 
     @Override

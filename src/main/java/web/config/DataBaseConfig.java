@@ -8,14 +8,12 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import web.model.User;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -26,7 +24,7 @@ import java.util.Properties;
 @EnableJpaRepositories("web.repository")
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
-@ComponentScan(value = "web")
+@ComponentScan("web")
 public class DataBaseConfig {
     private Environment env;
 
@@ -51,7 +49,7 @@ public class DataBaseConfig {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
         factoryBean.setDataSource(dataSource());
-        factoryBean.setJpaProperties(dbProperties());
+        factoryBean.setJpaProperties(hibernateProperties());
         factoryBean.setPackagesToScan(env.getRequiredProperty("db.entity.package"));
 
         factoryBean.setJpaVendorAdapter(vendorAdapter);
@@ -66,29 +64,21 @@ public class DataBaseConfig {
         return transactionManager;
     }
 
-//    @Bean
-//    public LocalSessionFactoryBean getSessionFactory() {
-//        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-//
-//        factoryBean.setDataSource(dataSource());
-//        factoryBean.setHibernateProperties(dbProperties());
-//
-//        factoryBean.setAnnotatedClasses(User.class);
-//        return factoryBean;
-//    }
-
-//    @Bean
-//    public HibernateTransactionManager getTransactionManager() {
-//        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-//        transactionManager.setSessionFactory(getSessionFactory().getObject());
-//        return transactionManager;
-//    }
-
     private Properties dbProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
+        return properties;
+    }
+
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        try(InputStream is = getClass().getClassLoader().getResourceAsStream("hibernate.properties")) {
+            properties.load(is);
+        } catch (IOException exception) {
+            throw new IllegalArgumentException("afasfsaf",exception);
+        }
         return properties;
     }
 }
