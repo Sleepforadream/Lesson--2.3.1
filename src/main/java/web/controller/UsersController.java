@@ -61,7 +61,7 @@ public class UsersController {
     @PostMapping("/{id}/delete")
     public String deleteUser(@ModelAttribute("user") User user, @PathVariable("id") Long id,ModelMap model) {
         userService.deleteUser(id);
-        model.addAttribute("user2", user);
+        model.addAttribute("deletedUser", user);
         return "users/success_delete";
     }
 }

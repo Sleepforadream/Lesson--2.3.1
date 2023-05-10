@@ -32,18 +32,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).get();
+    public User getUserById(Long id) {
+        return userRepository.findById(id).get();
     }
 
     @Transactional
     @Override
-    public void updateUser(Long id, User user) {
-        User updateUser = getUserById(id);
-        updateUser.setName(user.getName());
-        updateUser.setSurname(user.getSurname());
-        updateUser.setAge(user.getAge());
-        userRepository.flush();
+    public void updateUser(Long id, User newSwitchUser) {
+        newSwitchUser.setId(id);
+        userRepository.save(newSwitchUser);
     }
 
     @Transactional
